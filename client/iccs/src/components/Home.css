@@ -1,0 +1,42 @@
+.cards {
+
+    display: flex;
+    gap: 30vh;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: beige;
+}
+
+.teacher, .student {
+    color: white;
+    display: flex;
+    flex-direction: column;
+
+    justify-content: center;
+    width: 500px;
+    background-color: #AC0404;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: all 0.5s ease-in-out;
+}
+.text-start{
+    align-self: 'left';
+}
+.button {
+    background-color: #620505;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.button:hover {
+    transform: scale(1.1);
+    transition: background-color 0.3s ease-in-out;
+}
+
+.adminnav{
+    
+}

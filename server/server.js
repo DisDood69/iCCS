@@ -3,6 +3,7 @@ const mysql = require("mysql");
 const cors = require("cors");
 const path = require("path");
 
+
 const port = 5000;
 
 const app = express();
@@ -14,8 +15,12 @@ const db = mysql.createConnection({
     host: "localhost",
     user:  "root",
     password: "",
-    database: "iccs"
+    database: "iccs",
+    port: 3306
 });
+
+const studentRoutes = require("./routes/studentlog");
+app.use("/", studentRoutes(db));
 
 
 app.listen(port, () => {
