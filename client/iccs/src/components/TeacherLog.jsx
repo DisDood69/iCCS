@@ -14,7 +14,7 @@ function TeacherLog() {
   ];
    
   const navigate = useNavigate();
-  const [values, setValues] = useState({
+  const [teachinfo, setTeachinfo] = useState({
     teacher_id: '',
     subject_code:'',
   })
@@ -24,13 +24,21 @@ function TeacherLog() {
   }
 
 
-  function handleSubmit (e){
-    e.preventDefault()
-    axios.post("http://localhost:5000/teacher_log", values)
-    .then((res) =>{
-      console.log(res)
-    }).catch((err) => console.log(err))
-    }
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    axios
+      .post('http://localhost:5000/teacher_log', teachinfo)
+      .then((res) => console.log(res))
+      .catch((err) => {
+
+        if (err.response && err.response.data && err.response.data.error) {
+        alert(`Error: ${err.response.data.error}`);
+      } else {  
+        alert("An unexpected error occurred.");
+      }
+        console.error(err);
+      });
+    };
   
 
 
@@ -40,14 +48,14 @@ function TeacherLog() {
       <Form onSubmit={handleSubmit}>
         <Form.Group className="mb-3" controlId="InsertName">
         <Form.Label>Teacher Number</Form.Label>
-        <Form.Control type="text" placeholder="id" onChange={(e) => setValues({...values, id: e.target.value})}/>
+        <Form.Control type="text" placeholder="id" onChange={(e) => setTeachinfo({...teachinfo, teacher_id: e.target.value})}/>
         </Form.Group>
 
          <Form.Group className="mb-3">
           <Form.Label>Subject Code</Form.Label>
           <Select
             options={subjectOptions}
-            onChange={(selected) => setValues({ ...values, subject_code: selected.value })}
+            onChange={(selected) => setTeachinfo({ ...teachinfo, subject_code: selected.value })}
             placeholder="Type or select a subject"
           />
         </Form.Group>

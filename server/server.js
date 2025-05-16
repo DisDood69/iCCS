@@ -19,9 +19,14 @@ const db = mysql.createConnection({
     port: 3306
 });
 
-const studentRoutes = require("./routes/studentlog");
-app.use("/", studentRoutes(db));
+const studentlogRoutes = require("./routes/studentlog");
+app.use("/", studentlogRoutes(db));
 
+const adminRoutes = require("./routes/admin");
+app.use("/", adminRoutes(db));
+
+const teacherlogRoutes = require("./routes/teacherlog");
+app.use("/", teacherlogRoutes(db));
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
