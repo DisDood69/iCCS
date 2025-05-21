@@ -47,9 +47,6 @@ app.use("/", adminLogoutRoutes);
 const teacherlogRoutes = require("./routes/teacherlog");
 app.use("/", teacherlogRoutes(db));
 
-const studenthistoryRoutes = require("./routes/history");
-app.use("/", studenthistoryRoutes(db));
-
 const editRoutes = require("./routes/edit");
 app.use("/", editRoutes(db));
 
@@ -61,6 +58,9 @@ app.use("/", deleteRoutes(db));
 
 const sortRoutes = require("./routes/sort");
 app.use("/", sortRoutes(db));
+
+const dashboardRoutes = require("./routes/dashboard");
+app.use('/dashboard',dashboardRoutes(db));
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);

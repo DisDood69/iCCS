@@ -140,6 +140,46 @@ module.exports = (db) => {
         });
     })
 
+    router.get('/dashboard/metrics', async (req, res) => {
+    try {
+        const [teachersLoggedIn, studentsLoggedIn, totalTeachers, totalStudents] = await Promise.all([
+            new Promise((resolve, reject) => {
+                db.query('SELECT COUNT(*) AS count FROM teacher_log WHERE log_timestamp >= NOW() - INTERVAL 1 DAY', (err, results) => {
+                    if (err) return reject(err);
+                    resolve(results[0]); 
+                });
+            }),
+            new Promise((resolve, reject) => {
+                db.query('SELECT COUNT(*) AS count FROM student_log WHERE log_timestamp >= NOW() - INTERVAL 1 DAY', (err, results) => {
+                    if (err) return reject(err);
+                    resolve(results[0]); 
+                });
+            }),
+            new Promise((resolve, reject) => {
+                db.query('SELECT COUNT(*) AS count FROM teacher', (err, results) => {
+                    if (err) return reject(err);
+                    resolve(results[0]); 
+                });
+            }),
+            new Promise((resolve, reject) => {
+                db.query('SELECT COUNT(*) AS count FROM student', (err, results) => {
+                    if (err) return reject(err);
+                    resolve(results[0]); 
+                });
+            })
+        ]);
+
+        res.json({
+            teachersLoggedIn: teachersLoggedIn.count || 0,
+            studentsLoggedIn: studentsLoggedIn.count || 0,
+            totalTeachers: totalTeachers.count || 0,
+            totalStudents: totalStudents.count || 0
+        });
+    } catch (err) {
+        console.error('Error fetching metrics:', err);
+        res.status(500).json({ error: 'Failed to fetch dashboard metrics' });
+    }
+});
 
     return router;
 }

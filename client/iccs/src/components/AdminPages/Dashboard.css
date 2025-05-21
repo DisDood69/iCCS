@@ -1,31 +1,81 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
 
 body{
-    background-color: #F8F8FF;
+    background-color: #F0F2F5;
 }
 
 .dashboard{
     display: flex;
 }
+.dashboard-body{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
 
+}
 .dashboard-header {
-  
-  margin: 20px 0px 0px 20px;
-  font-size: 2rem;
-  color: #333;
-  width: 100vh; 
-  
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%; 
+  height: 10vh;
+  background-color: #fffefe;
   font-family: "Outfit", sans-serif;
-
+  align-items: center;
+  
 }
-.logout{
 
-    position: absolute;
-    top: 20px;
-    right: 50px;
+.greetings{
+    color: #A52A2A;
+    margin-left: 20px;
+    font-size: 30px;
+    font-weight: 600;
+}
+
+.user{
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    gap: 10px;
+    margin-right: 20px;
+}
+
+.username{
+  font-size: 25px;
+}
+.usericon{
+    width: 45px;
+    margin-bottom: 5px;
+}
+
+.metrics{
+    display: flex;
+    width: 100%;
+    height: 30vh;
+    margin-top: 30px;
+    
+    flex-direction: row;
+    gap: 25px;
+    justify-content: center;
+}
+
+.metric-card{
+    background-color: #fffefe;
+    border-radius: 5px;
+    width: 290px;
+
     z-index: 10;
-
 }
+
+.recentlogs{
+    display: flex;
+    width: 100%;
+    height: 100%;
+
+    flex-direction: row;
+}
+
+
 .sidebar{
     background-color: #A52A2A;
     width: 35vh;
@@ -83,7 +133,7 @@ body{
     right: 0;
     width: 0;
     height: 100%;
-    background: #F8F8FF; /* Wipe color */
+    background: #F0F2F5;
     border-bottom-left-radius: 50px;
     border-top-left-radius: 50px;
     z-index: 0;
@@ -106,4 +156,8 @@ body{
 
 .sidebar-items span:hover {
     color: #A52A2A;
+}
+
+.logout{
+    margin-top: 70px;
 }

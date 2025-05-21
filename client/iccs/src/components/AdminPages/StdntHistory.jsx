@@ -89,9 +89,9 @@ function StdntHistory() {
               </td>
             ))}
           </tr>
-        ) : null 
-  ))}
-</tbody>
+            ) : null 
+            ))}
+        </tbody>
       </table>
        <Button variant="secondary" onClick={() => navigate('/dashboard')}>Back</Button>
 

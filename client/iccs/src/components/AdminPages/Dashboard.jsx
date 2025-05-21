@@ -7,14 +7,30 @@ import { ReactComponent as StudentIcon } from '../../images/studenticon.svg';
 import { ReactComponent as TeacherIcon } from '../../images/teachericon.svg';
 import { ReactComponent as StudentLogIcon } from '../../images/slogicon.svg';
 import { ReactComponent as TeacherLogIcon } from '../../images/tlogicon.svg';
-import { useEffect } from 'react';
+import {ReactComponent as UserIcon} from '../../images/usericon.svg';
+import { useEffect,useState } from 'react';
 import ProtectedRoute from './HOC.jsx';
 
 
 function Dashboard() {
+    const [metrics, setMetrics] = useState({
+    teachersLoggedIn: 0,
+    studentsLoggedIn: 0,
+    totalTeachers: 0,
+    totalStudents: 0
+    });
+    //For showing the metrics
+    useEffect(() => {
+    axios.get('http://localhost:5000/dashboard/metrics', { withCredentials: true })
+      .then((res) => {
+        setMetrics(res.data);
+      })
+      .catch((err) => {
+        console.error('Error fetching metrics:', err);
+      });
+    }, []);
 
- 
-
+    //Navigation stuff
     const navigate = useNavigate();
     const gotoStudentTracking = () => {
         navigate('/dashboard/studentlogs')
@@ -37,9 +53,6 @@ function Dashboard() {
 
     return(
         <>
-        
-        
-
         <div className='dashboard'>
           <div className = 'sidebar'>
             <h1 className='logo'>Dashboard</h1>
@@ -59,19 +72,57 @@ function Dashboard() {
                 <span onClick={gotoTeacherTracking}> 
                   <TeacherLogIcon className='sidebar-icon'/> 
                   <p>Teacher Logs</p> 
-                </span> 
+                </span>
+
+                <Button className="logout" onClick={logOut}> Log Out </Button> 
+       
             </div>
-          </div> 
+          </div>
 
+          <div className='dashboard-body'>
            <header className="dashboard-header">
-            <h1>Hello, Administrator!</h1>
-            <Button className="logout" onClick={logOut}> Log Out </Button>
-          </header>
+            <h1 className='greetings'>Hello, Administrator!</h1>
+            <div className='user'>
+              <UserIcon className='usericon'></UserIcon>
+              <h3 className='username'> admin1 </h3>
+            </div>
+           </header>
 
+            <div className='metrics'>
+              <div className="metric-card">
+                <div className="metric-header">
+                  <h4>Total Students</h4>
+                </div>
+                <div className="metric-value">{metrics.totalStudents}</div>
+              </div>
 
+              <div className="metric-card">
+                <div className="metric-header">
+                  <h4>Total Teachers</h4>
+                </div>
+                <div className="metric-value">{metrics.totalTeachers}</div>
+              </div>
 
+              <div className="metric-card">
+                <div className="metric-header">
+                  <h4>Recent Students</h4>
+                </div>
+                <div className="metric-value">{metrics.studentsLoggedIn}</div>
+              </div>
 
+              <div className="metric-card">
+                <div className="metric-header">
+                  <h4>Recent Teachers</h4>
+                </div>
+                <div className="metric-value">{metrics.teachersLoggedIn}</div>
+              </div>
+            </div>
 
+            <div className='recentlogs'>
+
+            </div>
+
+          </div>
         </div>
          
         </>
