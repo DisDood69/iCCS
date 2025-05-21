@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 module.exports = (db) => {
-  router.post("/teacher_log", (req, res) => {
+  router.post("/", (req, res) => {
     console.log(req.body);
     const { teacher_id, subject_code } = req.body;
     const sql = "INSERT INTO teacher_log (teacher_id, subject_code) VALUES (?, ?)";

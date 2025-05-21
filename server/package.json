@@ -17,6 +17,7 @@
     "bootstrap": "^5.3.6",
     "cors": "^2.8.5",
     "express": "^5.1.0",
+    "express-session": "^1.18.1",
     "mysql": "^2.18.1",
     "nodemon": "^3.1.10",
     "react-bootstrap": "^2.10.9"

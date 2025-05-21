@@ -10,7 +10,7 @@ function TeacherLog() {
     { value: 'IMGT211', label: 'IMGT 211' },
     { value: 'INPR111', label: 'INPR 111' },
     { value: 'LFAD211', label: 'LFAD 211' },
-    { value: 'WEBDEV111', label: 'WEBDEV 111' },
+    { value: 'WBDV111', label: 'WBDV 112' },
   ];
    
   const navigate = useNavigate();

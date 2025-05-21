@@ -27,7 +27,7 @@ module.exports = (db) => {
             }
 
           
-            res.status(200).json({ message: "Data inserted successfully" });
+            res.status(200).json({ message: "Teacher Found" });
         });
 
 

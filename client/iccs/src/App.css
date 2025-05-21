@@ -2,3 +2,7 @@
     background-color: beige;
 
 }
+
+.modal-backdrop.show {
+  background-color: rgba(0,0,0,0.1) !important;
+}

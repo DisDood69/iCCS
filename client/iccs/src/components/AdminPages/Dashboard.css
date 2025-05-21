@@ -1,0 +1,109 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
+
+body{
+    background-color: #F8F8FF;
+}
+
+.dashboard{
+    display: flex;
+}
+
+.dashboard-header {
+  
+  margin: 20px 0px 0px 20px;
+  font-size: 2rem;
+  color: #333;
+  width: 100vh; 
+  
+  font-family: "Outfit", sans-serif;
+
+}
+.logout{
+
+    position: absolute;
+    top: 20px;
+    right: 50px;
+    z-index: 10;
+
+}
+.sidebar{
+    background-color: #A52A2A;
+    width: 35vh;
+    height: 100vh;
+}
+
+.sidebar-items{
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    align-items: center;
+}
+
+.sidebar-items svg{
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
+    margin-bottom: 15px;
+}
+
+.sidebar-items span:hover .sidebar-icon {
+    fill: #A52A2A; 
+
+}
+
+.logo{
+    padding: 25px;
+    margin-bottom: 40px;
+}
+
+.sidebar-items span {
+    position: relative;
+    color: #FAF0E6;
+    font-size: 20px;
+    padding-left: 50px;
+    padding-top: 10px;
+    border-bottom-left-radius: 50px;
+    border-top-left-radius: 50px;
+    cursor: pointer;
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    overflow: hidden;
+    z-index: 1;
+    background: #A52A2A;
+    transition: color 0.2s;
+}
+
+.sidebar-items span::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 0;
+    height: 100%;
+    background: #F8F8FF; /* Wipe color */
+    border-bottom-left-radius: 50px;
+    border-top-left-radius: 50px;
+    z-index: 0;
+    transition: width 0.3s cubic-bezier(0.77,0,0.175,1);
+}
+
+.sidebar-items span:hover::after {
+    width: 95%;
+}
+
+.sidebar-items span {
+    position: relative;
+    z-index: 1;
+}
+
+.sidebar-items span > * {
+    position: relative;
+    z-index: 2;
+}
+
+.sidebar-items span:hover {
+    color: #A52A2A;
+}

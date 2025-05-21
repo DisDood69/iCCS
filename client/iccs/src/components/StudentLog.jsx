@@ -3,6 +3,9 @@ import Select from 'react-select';
 import { Form, Button } from 'react-bootstrap';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import './StudentLog.css';
+
+// MAKE A FUNCTION THAT DOESNT COUNT AUTO INCREMENT WHEN ERROR OCCURS
 
 function StudentLog() {
   const navigate = useNavigate();

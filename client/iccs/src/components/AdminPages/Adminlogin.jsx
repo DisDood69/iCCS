@@ -16,8 +16,8 @@ function Adminlogin() {
     
     e.preventDefault();
     axios
-      .post('http://localhost:5000/admin_login', admininfo)
-      .then((res) => console.log(res))
+      .post('http://localhost:5000/admin_login', admininfo, {withCredentials:true})
+      .then((res) => navigate('/dashboard'))
       .catch((err) => {
 
         if (err.response && err.response.data && err.response.data.error) {

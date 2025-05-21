@@ -12,7 +12,7 @@ function Home() {
 
   const gotoStudentLog = () => {
     navigate('/studentlog')
-  } 
+  }
 
   const gotoTeacherLog = () => {
     navigate('/teacherlog')
@@ -20,8 +20,9 @@ function Home() {
 
   return (
     <>
-
+    <Button className="adminnav" variant="dark" onClick={() => navigate('/adminlogin')} style={{ marginTop: '30px' }}>ADMIN</Button>
      <div className='cards'>
+      
       <Card className='student'>
         <Card.Img variant="" src={studentImg} />
         <Card.Body className="text-start">
@@ -47,11 +48,9 @@ function Home() {
           <Card.Link className='button' as='button' onClick={gotoTeacherLog}>Log in</Card.Link>
         </Card.Body>
       </Card>
-      <Button className="adminnav" variant="dark" onClick={() => navigate('/adminlogin')} style={{ marginTop: '30px' }}>ADMIN</Button>
-
     </div>
     
-
+    
     </>
   );
 }

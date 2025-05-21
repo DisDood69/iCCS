@@ -1,9 +1,8 @@
 const bcrypt = require("bcrypt");
 const express = require("express");
 const router = express.Router();
-
+const session = require("express-session");
 // USERNAME IS ccsadmin1
-
 
 
 
@@ -41,13 +40,18 @@ module.exports = (db) => {
             error: "Invalid username or password. Please try again."
             });
         }
-    
+        
+        req.session.admin = { username: user.username };
         res.status(200).json({ message: "Login successful" });
         console.log("Login successful");
+        return;
+
         }catch (error) {
             console.error("Error comparing passwords:", error);
             return res.status(500).json({ error: "Internal server error" });
         }
+
+        
     });
   });
 
