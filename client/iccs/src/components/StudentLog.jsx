@@ -1,83 +1,171 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Select from 'react-select';
-import { Form, Button } from 'react-bootstrap';
+import { Form, Button, Modal } from 'react-bootstrap'; // Import Modal
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import {ReactComponent as SuccesIcon} from '../images/succes.svg';
+import {ReactComponent as ErrorIcon} from '../images/error.svg';
+import {ReactComponent as Logo} from '../images/iccsicon.svg';
+import { ReactComponent as BackIcon} from '../images/backicon.svg';
+import design from '../images/Education.jpg';
 import './StudentLog.css';
 
-// MAKE A FUNCTION THAT DOESNT COUNT AUTO INCREMENT WHEN ERROR OCCURS
 
 function StudentLog() {
+  const [allSubjects, setAllSubjects] = useState([]);
   const navigate = useNavigate();
   const [values, setValues] = useState({
     student_num: '',
-    subject_code: '',
+    subject_code: null,
     unit_num: '',
   });
 
-  const subjectOptions = [
-    { value: 'IMGT211', label: 'IMGT 211' },
-    { value: 'INPR111', label: 'INPR 111' },
-    { value: 'LFAD211', label: 'LFAD 211' },
-    { value: 'WEBDEV111', label: 'WEBDEV 111' },
-  ];
+  // New states for confirmation and error modals
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [showErrorModal, setShowErrorModal] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+
+  const fetchAllSubjects = () => {
+    axios
+      .get('http://localhost:5000/subjectlist', { withCredentials: true })
+      .then(res => setAllSubjects(res.data))
+      .catch(err => console.error(err));
+  };
+
+  useEffect(() => {
+    fetchAllSubjects();
+  }, []);
+
+  const confirmSuccess = () => {
+    setShowSuccessModal(false);
+    navigate('/');
+  }
+
+  const subjectOptions = allSubjects.map(sub => ({
+    value: sub.subject_code,
+    label: `${sub.subject_code} - ${sub.subject_name}`
+  }));
+
+  const selectedSubjectOption = subjectOptions.find(
+    option => option.value === values.subject_code
+  );
 
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
       .post('http://localhost:5000/student_log', values)
-      .then((res) => console.log(res))
+      .then((res) => {
+        console.log(res);
+        setValues({
+          student_num: '',
+          subject_code: null,
+          unit_num: '',
+        });
+        setShowSuccessModal(true); 
+      })
       .catch((err) => {
-
-        if (err.response && err.response.data && err.response.data.error) {
-        alert(`Error: ${err.response.data.error}`);
-      } else {  
-        alert("An unexpected error occurred.");
-      }
         console.error(err);
+        let msg = "An unexpected error occurred.";
+        if (err.response && err.response.data && err.response.data.error) {
+          msg = `Error: ${err.response.data.error}`;
+        }
+        setErrorMessage(msg); 
+        setShowErrorModal(true); 
       });
-    };
-  
+  };
 
   return (
-    <>
-      <Button variant="dark" onClick={() => navigate('/')} style={{ marginBottom: '30px' }}>
-        HOME
-      </Button>
-
+    <div className='studentlog-container'>
+      
+    <div className="Stdlog-container">
+      <div className='logo-container'>
+      <div className='logo-iccs'>
+        <Logo ></Logo>
+      </div>
+      </div>
       <Form onSubmit={handleSubmit}>
         <Form.Group className="mb-3">
-          <Form.Label>Student Number</Form.Label>
+          <Form.Label className='label'>Student Number</Form.Label>
           <Form.Control
-            type="number"
             placeholder="Enter student number"
+            value={values.student_num}
+            className='field'
             onChange={(e) => setValues({ ...values, student_num: e.target.value })}
           />
         </Form.Group>
 
         <Form.Group className="mb-3">
-          <Form.Label>Subject Code</Form.Label>
+          <Form.Label className='label'>Subject Code</Form.Label>
           <Select
+
             options={subjectOptions}
-            onChange={(selected) => setValues({ ...values, subject_code: selected.value })}
+            value={selectedSubjectOption}
+            onChange={(selected) => setValues({ ...values, subject_code: selected ? selected.value : null })}
             placeholder="Type or select a subject"
+            isClearable={true}
           />
         </Form.Group>
 
         <Form.Group className="mb-3">
-          <Form.Label>Unit Number</Form.Label>
+          <Form.Label className='label'>Unit Number</Form.Label>
           <Form.Control
             type="number"
             placeholder="Enter unit number"
+            className='field'
+            value={values.unit_num}
             onChange={(e) => setValues({ ...values, unit_num: e.target.value })}
           />
         </Form.Group>
-
-        <Button type="submit" variant="success">
+    <div className='save-button'>
+        <Button className='submit-button' type="submit" variant="success">
           SAVE DETAILS
         </Button>
+        <div className='back'>
+          <Button onClick= {() => navigate('/')}className='back-button'>
+          <BackIcon className='back-icon'></BackIcon>
+          <h3>GO HOME</h3>
+        </Button>
+      
+    </div>
+    
+    </div>
       </Form>
-    </>
+    
+    </div>
+    <div className='design-container'>
+        
+        <div className='image-container'> 
+          <h1>Student Login</h1>
+          <img src={design}></img>
+        </div>
+    </div>
+
+      <Modal show={showSuccessModal} onHide={() => setShowSuccessModal(false)} backdrop="static">
+        <Modal.Header closeButton>
+          <Modal.Title>Success!</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <SuccesIcon></SuccesIcon>
+          Student log saved successfully.
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => confirmSuccess()}>Close</Button>
+        </Modal.Footer>
+      </Modal>
+
+      <Modal show={showErrorModal} onHide={() => setShowErrorModal(false)} backdrop="static">
+        <Modal.Header closeButton>
+          <Modal.Title>Error</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <ErrorIcon></ErrorIcon>
+          {errorMessage}
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowErrorModal(false)}>Close</Button>
+        </Modal.Footer>
+      </Modal>
+    </div>
   );
 }
 

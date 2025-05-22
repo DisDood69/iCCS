@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
 
-.studentlog-container {
+.teacherlog-container {
     display: flex;
     align-items: center;
     width: 100%;
@@ -9,9 +9,9 @@
     background-color: #F0F2F5;
 }
 
-.Stdlog-container {
+.Tchrlog-container {
     width: 55%;
-    margin-left: 5vh ;
+    margin-left: 5vh;
     border-radius: 20px;
     height: 90vh;
     background-color: #ffffff;
@@ -21,7 +21,6 @@
     align-items: right;
     padding: 0px 70px;
 }
-
 
 .design-container {
     height: 100vh;
@@ -44,7 +43,10 @@
 .logo-iccs {
     width: 400px;
 }
-
+.image{
+    width: 626px;
+    height: 417px;
+}
 .field {
     height: 50px;
     border: 2px solid #cdcdcd;
@@ -56,12 +58,10 @@
 .back {
     width: 100%;
     display: flex;
-
     align-items: center;
 }
 
 .back-button {
-
     display: flex;
     align-items: center;
     width: 170px;
@@ -109,19 +109,19 @@
 }
 
 .save-button {
-    margin-top: 30px;
+   
     display: flex;
+    align-items: center;
     flex-direction: row-reverse;
     font-family: 'Inter', sans-serif;
 }
 
 .submit-button {
-    width: 150px;
+    width: 100px;
     height: 50px;
     border-radius: 20px;
     background-color: #A52A2A;
     border-style: none;
-    
 }
 
 .submit-button:hover {
@@ -167,6 +167,14 @@
     height: 500px;
 }
 
+.react-select__control {
+    border: 2px solid #cdcdcd;
+    height: 50px;
+    min-height: 50px;
+    box-shadow: none;
+    border-radius: 5px;
+    transition: all 0.2s ease-in-out;
+}
 
 .react-select__control--is-focused {
     border-color: #A52A2A !important;
