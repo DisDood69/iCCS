@@ -55,6 +55,16 @@ module.exports = (db) => {
     });
   });
 
+  router.get("/admin_username", (req, res) => {
+
+    if (!req.session.admin || !req.session.admin.username) {
+        return res.status(401).json({ error: "Not logged in" });
+    }
+
+    const username = req.session.admin.username;
+    res.status(200).json({ username });
+});
+
   return router;
 };
  

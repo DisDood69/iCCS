@@ -41,5 +41,20 @@ module.exports = (db) => {
             });
         });
     })
+
+    router.delete("/subjectdelete/:subject_code", (req,res) => {
+        const subject_code = req.params.subject_code;
+        const delete_sub = "DELETE FROM subject WHERE subject_code = ?";
+        db.query(delete_sub, [subject_code], (err, result) =>{
+        if (err) {
+                return res.status(500).json({ error: "Something went wrong on the server." });
+            }
+            if (result.affectedRows === 0) {
+                return res.status(400).json({ error: "No Subject found with that ID." });
+            }
+            res.status(200).json({ message: "Subject deleted successfully." });
+
+        })
+    })
     return router;
 }

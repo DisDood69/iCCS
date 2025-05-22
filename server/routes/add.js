@@ -46,6 +46,22 @@ module.exports = (db) => {
         });    
     });
 
+    router.post("/add_subject", (req, res) => {
+
+        const { subject_code, subject_name} = req.body;
+        const addSub = `INSERT INTO subject (subject_code, subject_name) VALUES (?, ?)`;
+        db.query( addSub, [subject_code, subject_name], (err, result)  => {
+            if (err) {
+                console.error(err);
+                return res.status(500).json({ error: "Something went wrong on the server." });
+            }
+            if (result.length === 0) {
+                return res.status(400).json({ error: "Invalid input" });
+            }
+        })
+    }) 
+
+    
       return router;
   };
 

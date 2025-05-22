@@ -1,8 +1,18 @@
+// StdntManage.jsx
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { Button, Modal, Form, Dropdown, DropdownButton } from 'react-bootstrap'
 import ProtectedRoute from './HOC.jsx';
 import { useNavigate } from 'react-router-dom';
+import AdminLayout from './Adminlayout.jsx';
+import { ReactComponent as FilterIcon} from '../../images/filtericon.svg';
+import { ReactComponent as HomeIcon} from '../../images/homeicon.svg';
+import { ReactComponent as AddIcon} from '../../images/addicon.svg';
+import { ReactComponent as BackIcon} from '../../images/backicon.svg';
+import { ReactComponent as EditIcon} from '../../images/editicon.svg';
+import { ReactComponent as ViewIcon} from '../../images/viewicon.svg';
+import { ReactComponent as DelIcon} from '../../images/deleteicon.svg';
+import './tchtables.css';
 
 
 function StdntManagement() {
@@ -15,6 +25,8 @@ function StdntManagement() {
   const [show, setShow] = useState(false);
   const [editStudent, setEditStudent] = useState(null);
   const navigate = useNavigate();
+ 
+
 
   const [studentInfo, setStudentInfo] = useState({
     student_number: '',
@@ -43,7 +55,6 @@ function StdntManagement() {
     .catch(err => console.error(err));
   };
 
-//On submit of the form, it will send a post request to the server
  const addStudent = (e) => {
     e.preventDefault();
     axios
@@ -78,12 +89,14 @@ function StdntManagement() {
   }
   
   const deleteStudent = (student_number) => {
+    if (window.confirm(`Are you sure you want to delete the student ${student_number}?`)) {
     axios.delete(`http://localhost:5000/studentdelete/${student_number}`, { withCredentials: true })
     .then(() => {
       fetchStudents();
     })
     .catch(err => console.error(err));
   }
+}
 
   const viewStudent = (student) => {
     setViewStudentData(student);
@@ -91,7 +104,10 @@ function StdntManagement() {
   }
 
   const handleEditClick = (student) => {
-    setEditStudent(student);
+    setEditStudent({
+      ...student,
+      original_student_number: student.student_number
+    });
     setShow(true);
   };
 
@@ -101,49 +117,69 @@ function StdntManagement() {
 
   const handleEditSave = () => {
     console.log("editStudent:", editStudent);
-    axios.put(`http://localhost:5000/studentedit/${editStudent.student_number}`, editStudent, { withCredentials: true })
+
+    axios.put(`http://localhost:5000/studentedit/${editStudent.original_student_number}`, editStudent, { withCredentials: true })
       .then(() => {
         setShow(false);
         fetchStudents();
       })
       .catch(err => console.error(err));
   };
+  
+  const goBack = () => {
+    navigate(-1);
+  }
 
   return (
-    <div>
-      
-      <h1>Student Info</h1>
-      <Button variant="primary" onClick={() => setShowAdd(true)}>Add Student</Button>
-      <Button variant="secondary" onClick={() => sortDirection()}>
-       Sort {sortOrder === "asc" ? "↑" : "↓"}
-      </Button>
-      <DropdownButton
-        id="dropdown-sort-column"
-        title={`Sort by: ${columns.find(col => col.key === sortColumn)?.label || 'Select Column'}`}
-        variant="secondary"
-      >
-        {columns.map(col => (
-          <Dropdown.Item
-            key={col.key}
-            onClick={() => {
-              setSortColumn(col.key);
-              fetchStudents();
-            }}
-          >
-            {col.label}
-          </Dropdown.Item>
-        ))}
-      </DropdownButton>
 
-      <table>
+    <AdminLayout title="Student Information">
+      <div className='button-group'>
+        <div className='essential-buttons'>
+          <HomeIcon onClick={() => navigate('/dashboard')} style={{cursor:'pointer'}}></HomeIcon>
+          <BackIcon onClick={goBack} style={{cursor:'pointer'}}></BackIcon>
+          <AddIcon onClick={() => setShowAdd(true)} style={{cursor:'pointer'}}></AddIcon>
+        </div>
+        <div className='sort-buttons'>
+          <Button className='sortupdown' onClick={() => sortDirection()}>  
+             {sortOrder === "asc" ? " ↑↓" : " ↓↑"}
+          </Button>
+          <DropdownButton
+            id="dropdown-sort-column"
+            title={<FilterIcon></FilterIcon>}
+            className='filterdrop'
+          >
+            {columns.map(col => (
+              <Dropdown.Item
+                key={col.key}
+                active={sortColumn === col.key} 
+                className={sortColumn === col.key ? "selected-filter" : ""}
+                onClick={() => {
+                  setSortColumn(col.key);
+                  fetchStudents();
+                }}
+              >
+                {col.label}
+              </Dropdown.Item>
+            ))}
+          </DropdownButton>
+        </div>
+      </div>
+      <div className='table-container2'>
+      <table className="table-title">
         <thead>
           <tr>
-            {logs[0] && Object.keys(logs[0]).map(key => (
-              <th key={key}>{key}</th>
-            ))}
-            <th>Edit</th>
+              <th>Student Number</th>
+              <th>Name</th>
+              <th>Year Level</th>
+              <th>Program</th>
+              <th>Section</th>
+              <th>Action</th>
           </tr>
         </thead>
+      </table>
+      <div className='table-table-scroll'>
+      <table className='table-table'>
+        
         <tbody>
           {logs.map((log, idx) => (
             <tr key={idx}>
@@ -151,30 +187,25 @@ function StdntManagement() {
                 <td key={i}>{val}</td>
               ))}
               <td>
-                <Button variant="primary" onClick={() => viewStudent(log)}>View</Button>
+                <div className='config-buttons'> 
+                <ViewIcon className='config-button'onClick={() => viewStudent(log)}></ViewIcon>
+                <EditIcon className='config-button' onClick={() => handleEditClick(log)}></EditIcon>
+                <DelIcon className='config-button' onClick={() => deleteStudent(log.student_number)}></DelIcon>
+                </div>
               </td>
-
-              <td>
-                <Button variant="primary" onClick={() => handleEditClick(log)}>Edit</Button>
-              </td>
-
-              <td>
-                <Button variant="danger" onClick={() => deleteStudent(log.student_number)}>Delete</Button>
-              </td>
-
-              
             </tr>
           ))}
         </tbody>
       </table>
+      </div>
+      </div>     
 
-      <Button variant="secondary" onClick={() => navigate('/dashboard')}>Back</Button>
 
-      <Modal show={showAdd} onHide={() => setShowAdd(false)}>
+      <Modal show={showAdd} onHide={() => setShowAdd(false)} backdrop="static">
         <Modal.Header closeButton>
           <Modal.Title>Add a Student</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
+        <Modal.Body className=''>
           <Form id="add-student-form" onSubmit={addStudent}>
             <Form.Group>
               <Form.Label>Student Number</Form.Label>
@@ -202,19 +233,19 @@ function StdntManagement() {
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={() => setShowAdd(false)}>Close</Button>
-          <Button variant="primary" type="submit" form="add-student-form">Add Student</Button>
+          <Button className='save-button' type="submit" form="add-student-form">Add Student</Button>
         </Modal.Footer>
       </Modal>
         
       
-      <Modal show={showView} onHide={() => setShowView(false)}>
+      <Modal show={showView} onHide={() => setShowView(false)} backdrop="static">
         <Modal.Header closeButton>
           <Modal.Title>View Student</Modal.Title>
         </Modal.Header>
         <Modal.Body>
         {viewStudentData && (
-          <div>
-            <p><strong>Name:</strong> {viewStudentData.student_name}</p>
+          <div className='details'>
+            <p><strong>Name:</strong>{viewStudentData.student_name}</p>
             <p><strong>Year:</strong> {viewStudentData.year}</p>
             <p><strong>Course:</strong> {viewStudentData.course}</p>
             <p><strong>Section:</strong> {viewStudentData.section}</p>
@@ -222,17 +253,21 @@ function StdntManagement() {
         )}
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowView(false)}>Close</Button>
+          <Button className='save-button'  onClick={() => setShowView(false)}>Close</Button>
         </Modal.Footer>
       </Modal>
 
-      <Modal show={show} onHide={() => setShow(false)}>
+      <Modal show={show} onHide={() => setShow(false)} backdrop="static">
         <Modal.Header closeButton>
           <Modal.Title>Edit Student</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           {editStudent && (
             <Form>
+              <Form.Group>
+                <Form.Label>Student Number</Form.Label>
+                <Form.Control name="student_number" value={editStudent.student_number} onChange={handleEditChange} />
+              </Form.Group>
               <Form.Group>
                 <Form.Label>Name</Form.Label>
                 <Form.Control name="student_name" value={editStudent.student_name} onChange={handleEditChange} />
@@ -254,11 +289,11 @@ function StdntManagement() {
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={() => setShow(false)}>Cancel</Button>
-          <Button variant="primary" onClick={handleEditSave}>Save</Button>
+          <Button className='save-button' onClick={handleEditSave}>Save Changes</Button>
         </Modal.Footer>
       </Modal>
-    </div>
+      </AdminLayout>
+
   )
 }
-
-export default ProtectedRoute(StdntManagement);
+export default ProtectedRoute(StdntManagement)

@@ -181,6 +181,53 @@ module.exports = (db) => {
     }
 });
 
+
+router.get('/recentstudentlogs', (req, res) => {
+    const sql = `
+        SELECT sl.log_id, s.student_number, s.student_name, sl.subject_code, sl.log_timestamp, sl.unit_num 
+        FROM student_log sl 
+        JOIN student s ON sl.student_num = s.student_number
+        ORDER BY sl.log_timestamp DESC
+        LIMIT 10;
+    `;
+    db.query(sql, (err, result) => {
+        if (err) {
+            return res.status(500).json({ error: 'Failed to fetch recent student logs.' });
+        }
+        res.status(200).json(result);
+    });
+});
+
+
+router.get('/recentteacherlogs', (req, res) => {
+    const sql = `
+        SELECT tl.log_id, t.teacher_id, t.teacher_name, tl.subject_code, tl.log_timestamp 
+        FROM teacher_log tl 
+        JOIN teacher t ON tl.teacher_id = t.teacher_id
+        ORDER BY tl.log_timestamp DESC
+        LIMIT 10;
+    `;
+    db.query(sql, (err, result) => {
+        if (err) {
+            return res.status(500).json({ error: 'Failed to fetch recent teacher logs.' });
+        }
+        res.status(200).json(result);
+    });
+});
+
+router.get("/subjectlist", (req, res) => {
+    const sql = "SELECT * FROM subject"
+    db.query(sql, (err, result) =>{
+        if(err){
+            return res.status(500).json({ error: 'Failed to fetch subjects.' });
+        }
+        res.status(200).json(result);
+        console.log(result);
+    })
+})
+
+
+
     return router;
 }
 

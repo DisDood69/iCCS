@@ -3,7 +3,13 @@ import axios from 'axios';
 import ProtectedRoute from './HOC.jsx';
 import { Button, Modal, Dropdown, DropdownButton } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-import './stdnthistory.css';
+
+import AdminLayout from './Adminlayout.jsx';
+import { ReactComponent as FilterIcon} from '../../images/filtericon.svg';
+import { ReactComponent as HomeIcon} from '../../images/homeicon.svg';
+import { ReactComponent as BackIcon} from '../../images/backicon.svg';
+
+import './studlog.css';
 
 
 function StdntHistory() {
@@ -11,8 +17,8 @@ function StdntHistory() {
   const [show, setShow] = useState(false);
   const navigate = useNavigate();
   const [logs, setLogs] = useState([]);
-  const [sortOrder, setSortOrder] = useState('asc');
-  const [sortColumn, setSortColumn] = useState('log_id');
+  const [sortOrder, setSortOrder] = useState('desc');
+  const [sortColumn, setSortColumn] = useState('log_timestamp');
   const [selectedLog, setSelectedLog] = useState(null);
   const columns = [
     { key: 'log_id', label: 'Log ID' },
@@ -48,38 +54,59 @@ function StdntHistory() {
     setShow(true); 
   };
 
+  const goBack = () => {
+    navigate(-1);
+  }
+
   return (
     <div>
-      <h1>Student Logs</h1>
-      <Button variant="secondary" onClick={() => sortDirection()}>
-        Sort {sortOrder === "asc" ? "↑" : "↓"}
-      </Button>
-      <DropdownButton
-        id="dropdown-sort-column"
-        title={`Sort by: ${columns.find(col => col.key === sortColumn)?.label || 'Select Column'}`}
-        variant="secondary"
-      >
-        {columns.map(col => (
-          <Dropdown.Item
-            key={col.key}
-            onClick={() => {
-              setSortColumn(col.key);
-              fetchStudentLog();
-            }}
-          >
-            {col.label}
-          </Dropdown.Item>
-        ))}
-      </DropdownButton>
-      <table>
+      <AdminLayout title="Student Logs">     
+      <div className='button-group'>
+              <div className='essential-buttons'>
+                <HomeIcon onClick={() => navigate('/dashboard')} style={{cursor:'pointer'}}></HomeIcon>
+                <BackIcon onClick={goBack} style={{cursor:'pointer'}}></BackIcon>
+              </div>
+              <div className='sort-buttons'>
+                <Button className='sortupdown' onClick={() => sortDirection()}>  
+                   {sortOrder === "asc" ? " ↑↓" : " ↓↑"}
+                </Button>
+                <DropdownButton
+                  id="dropdown-sort-column"
+                  title={<FilterIcon></FilterIcon>}
+                  className='filterdrop'
+                >
+                  {columns.map(col => (
+                    <Dropdown.Item
+                      key={col.key}
+                      active={sortColumn === col.key} 
+                      className={sortColumn === col.key ? "selected-filter" : ""}
+                      onClick={() => {
+                        setSortColumn(col.key);
+                        fetchStudentLog();
+                      }}
+                    >
+                      {col.label}
+                    </Dropdown.Item>
+                  ))}
+              </DropdownButton>
+            </div>
+        </div>
+    <div className='table-container2'>
+      <table className="stdlog-title">
         <thead>
           <tr>
-            {logs[0] && Object.keys(logs[0]).map(key => (
-              <th key={key}>{key}</th>
-            ))}
+              <th>Log ID</th>
+              <th>Student Number</th>
+              <th>Name</th>
+              <th>Subject</th>
+              <th>Time</th>
+              <th>Unit Number</th>
           </tr>
-        </thead>
-        <tbody className='rows'>
+          </thead>
+        </table>
+      <div className='stdlog-table-scroll'>
+       <table className='stdlog-table'>
+        <tbody>
           {logs.map((log, idx) => (
           typeof log === 'object' && log !== null ? ( 
           <tr key={idx} onClick={() => handleRowClick(log)} style={{ cursor: 'pointer' }}>
@@ -93,7 +120,9 @@ function StdntHistory() {
             ))}
         </tbody>
       </table>
-       <Button variant="secondary" onClick={() => navigate('/dashboard')}>Back</Button>
+      </div>
+      </div>
+      
 
        
                 <Modal show={show} onHide={() => setShow(false)}>
@@ -122,6 +151,8 @@ function StdntHistory() {
           </Button>
         </Modal.Footer>
       </Modal>
+      </AdminLayout>
+ 
     </div>
   )
 }
