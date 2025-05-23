@@ -390,7 +390,7 @@ function TchrManagement() {
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={() => setShowAdd(false)}>Close</Button>
-          <Button variant="primary" type="submit" form="add-teacher-form">Add Teacher</Button>
+          <Button variant="primary" type="submit" form="add-teacher-form" style={{backgroundColor:'#A52A2A', borderStyle:'none'}}>Add Teacher</Button>
         </Modal.Footer>
       </Modal>
 
@@ -458,7 +458,7 @@ function TchrManagement() {
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={() => setShow(false)}>Cancel</Button>
-          <Button variant="primary" onClick={handleEditSave}>Save</Button>
+          <Button style={{backgroundColor:'#A52A2A', borderStyle:'none'}}variant="primary" onClick={handleEditSave}>Save</Button>
         </Modal.Footer>
       </Modal>
 
@@ -473,9 +473,12 @@ function TchrManagement() {
               <p><strong>Teacher ID:</strong> {viewTeacherData.teacher_id}</p>
               <p><strong>Teacher Name:</strong> {viewTeacherData.teacher_name}</p>
               <p><strong>Subjects Taught:</strong></p>
-              {viewTeacherData.subjects.split('\n').map((subject, index) => (
-                <p key={index}>{subject}</p>
-              ))}
+              {viewTeacherData.subjects
+              ? viewTeacherData.subjects.split('\n').map((subject, index) => (
+              <p key={index}>{subject}</p>
+              ))
+              : <p>No subjects assigned.</p>
+              }
             </div>
           )}
         </Modal.Body>
@@ -550,8 +553,10 @@ function TchrManagement() {
                 required
               />
             </Form.Group>
-            <Button className='save-button' type="submit">Add Subject</Button>
+            <Modal.Footer>
             <Button variant="secondary" className="ms-2" onClick={() => setShowAddSubjectModal(false)}>Cancel</Button>
+            <Button className='save-button' type="submit">Add Subject</Button>
+            </Modal.Footer>
           </Form>
         </Modal.Body>
       </Modal>
@@ -584,8 +589,10 @@ function TchrManagement() {
                   required
                 />
               </Form.Group>
-              <Button className='save-button' type="submit">Save Changes</Button>
+              <Modal.Footer>
               <Button variant="secondary" className="ms-2" onClick={() => setShowEditSubjectModal(false)}>Cancel</Button>
+              <Button className='save-button' type="submit">Save</Button>
+              </Modal.Footer>
             </Form>
           )}
         </Modal.Body>

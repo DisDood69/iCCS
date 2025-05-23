@@ -116,7 +116,7 @@ function StudentLog() {
             onChange={(e) => setValues({ ...values, unit_num: e.target.value })}
           />
         </Form.Group>
-    <div className='save-button'>
+    <div className='save-button1'>
         <Button className='submit-button' type="submit" variant="success">
           SAVE DETAILS
         </Button>

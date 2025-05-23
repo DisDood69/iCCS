@@ -1,57 +1,44 @@
-import React from 'react'
-import Card from 'react-bootstrap/Card'
-import { useNavigate } from 'react-router-dom'
-import "./Home.css"
-import studentImg from '../images/studentcard.jpg'
-import teacherImg from '../images/teacher.jpg'
-import { Button } from 'react-bootstrap'
-
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Button } from 'react-bootstrap';
+import './Home.css';
+import { ReactComponent as Logo2 } from '../images/iccsicon2.svg';
+import {ReactComponent as UserIcon} from '../images/usericon.svg';
 
 function Home() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const gotoStudentLog = () => {
-    navigate('/studentlog')
-  }
+    navigate('/studentlog');
+  };
 
   const gotoTeacherLog = () => {
-    navigate('/teacherlog')
-  }
+    navigate('/teacherlog');
+  };
 
   return (
-    <>
-    <Button className="adminnav" variant="dark" onClick={() => navigate('/adminlogin')} style={{ marginTop: '30px' }}>ADMIN</Button>
-     <div className='cards'>
-      
-      <Card className='student'>
-        <Card.Img variant="" src={studentImg} />
-        <Card.Body className="text-start">
-          <Card.Title>Student Login</Card.Title>
-          <Card.Text>
-            CCS students login
-          </Card.Text>
-        </Card.Body>
-        <Card.Body className="text-center">
-          <Card.Link className='button' as='button' onClick={gotoStudentLog}>Log in</Card.Link>
-        </Card.Body>
-      </Card>
+    <div className='home-container'>
+      <div className='home-button-container'>
+        <Logo2 className='home-logo'></Logo2>
+      </div>
+      <h2 className='title'> iCCS: A Computer Laboratory Management System</h2>
 
-      <Card className='teacher'>
-        <Card.Img variant="" src={teacherImg} />
-        <Card.Body className="text-start">
-          <Card.Title>Teacher Login</Card.Title>
-          <Card.Text>
-            Teacher login to their account and view their details.
-          </Card.Text>
-        </Card.Body>
-        <Card.Body className="text-center">
-          <Card.Link className='button' as='button' onClick={gotoTeacherLog}>Log in</Card.Link>
-        </Card.Body>
-      </Card>
+    <div className='button container'>
+    
+      <Button className="adminnav"  onClick={() => navigate('/adminlogin')}>
+        <UserIcon className='usericon' style={{width:'40px'}}></UserIcon>
+        Administrator
+      </Button>
+      <div className='cards'>
+        <Button className='choice-button' onClick={gotoStudentLog}>
+          Student
+        </Button>
+        <Button className='choice-button' onClick={gotoTeacherLog}>
+          Teacher
+        </Button>
+      </div>
+      </div>
     </div>
-    
-    
-    </>
   );
 }
 

@@ -34,9 +34,6 @@ module.exports = (db) => {
             if (err) {
                 return res.status(500).json({ error: "Something went wrong on the server." });
             }
-            if (result.affectedRows === 0) {
-                return res.status(400).json({ error: "No teacher found with that ID." });
-            }
             res.status(200).json({ message: "Teacher deleted successfully." });
             });
         });

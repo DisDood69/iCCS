@@ -58,6 +58,8 @@ module.exports = (db) => {
             if (result.length === 0) {
                 return res.status(400).json({ error: "Invalid input" });
             }
+
+            res.status(200).json({ message: "Subject added successfully" });
         })
     }) 
 

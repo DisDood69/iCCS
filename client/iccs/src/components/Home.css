@@ -1,49 +1,103 @@
-.cards {
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
 
-    display: flex;
-    gap: 30vh;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-   
+
+body {
+    background-image: url('../images/design.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    margin: 0;
+    padding: 0;
 }
 
-.teacher, .student {
-    color: white;
+.home-container {
+    width: 100%;
+    height: 100vh;
     display: flex;
     flex-direction: column;
-
     justify-content: center;
-    width: 500px;
+    align-items: center;
+    position: relative;
+}
+
+.title{
+    margin-top: -150px;
+    margin-bottom: 100px;
+    color: #A52A2A;
+    font-size: 20px;
+    font-weight: 700;
+    font-family: 'Inter',sans-serif;
+}
+.home-logo {
+    width: 700px; 
+    margin-top: -200px;
+   
+}
+.cards {
+    display: flex;
+    gap: 200px;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+  
+}
+
+.choice-button {
+    width: 400px;
+    height: 150px;
+    font-size: 24px;
     background-color: #AC0404;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    transition: all 0.5s ease-in-out;
-}
-.text-start{
-    align-self: 'left';
-}
-.button {
-    background-color: #620505;
     color: white;
     border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
+    border-radius: 100px;
     cursor: pointer;
-    font-size: 16px;
+    font-size: 30px;
+    font-weight: 800;
+    font-family: 'Inter', sans-serif;
+    transition: all 0.5s ease-in-out;
 }
 
-.button:hover {
-    transform: scale(1.1);
-    transition: background-color 0.3s ease-in-out;
+.choice-button:hover {
+    transform: scale(1.05);
+    background-color: #620505;
 }
 
 .adminnav {
   position: absolute;
-  top: 10px;
-  right: 100px;
+  background-color: transparent;
+  border-style: none;
+  color:#A52A2A;
+  font-size: 20px;
+  top: 30px;
+  right: 60px;
   z-index: 1000;
   padding: 10px 15px;
-
-  border-radius: 5px;
+  border-radius: 40px;
   font-weight: bold;
+  transition: all 0.5s ease-in-out;
+}
+
+.usericon{
+    transition: all 0.5s ease-in-out;
+}
+
+.adminnav:hover {
+  position: absolute;
+  background-color: transparent;
+  border-style: none;
+   color:#620505;
+  top: 30px;
+  right: 60px;
+  z-index: 1000;
+  padding: 10px 15px;
+  border-radius: 40px;
+  font-weight: bold;
+   transform: scale(1.05);
+}
+
+.adminnav:hover .usericon {
+  fill:#620505;
+   transform: scale(1.05);
 }

@@ -6,6 +6,7 @@ import './Dashboard.css'
 import { useEffect,useState } from 'react';
 import ProtectedRoute from './HOC.jsx';
 import AdminLayout from './Adminlayout.jsx'
+import {ReactComponent as UserIcon} from '../../images/usericon.svg';
 
 
 function Dashboard() {
